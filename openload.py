@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 import httplib2
 import json
+import xbmcaddon
 from config_default import configs
 
+cache = xbmcaddon.Addon(id='plugin.video.mv6park').getAddonInfo('path') + '/.cache'
+
 #httplib2.debuglevel = 1
-h = httplib2.Http('.cache')
+h = httplib2.Http(cache, disable_ssl_certificate_validation=True)
 
 def get_dl_ticket(file, login, key):
     url = 'https://api.openload.co/1/file/dlticket?file=%s&login=%s&key=%s' % (file, login, key)

@@ -2,6 +2,9 @@
 # mv6park 新浪博客
 ######################################################
 
+# Version 0.0.2  2016-2-7 fanshaohua.fan
+# Using BeautifulSoap to parse the HTML
+
 # Version 0.0.1  2016-2-7 fanshaohua.fan
 # Initial version
 ######################################################

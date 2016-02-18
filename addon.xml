@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.mv6park"
     name="mv6park Sina blog"
-    version="0.0.1"
+    version="0.0.2"
     provider-name="fanshaohua.fan">
+    <requires>
+        <import addon="script.module.beautifulsoup4" version="4.3.2"/>
+        <import addon="script.module.httplib2" version="0.8.0"/>
+        <import addon="script.module.html5lib" version="0.1.0"/>
+    </requires>
     <extension
         point="xbmc.python.pluginsource"
         library="default.py">

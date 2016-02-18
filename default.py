@@ -3,8 +3,9 @@ import urllib,urllib2,re,os,xbmcplugin,xbmcgui,xbmc
 import xbmcaddon
 import gzip, StringIO
 import cookielib
-from lxml import html
 from openload import get_dl_link
+from bs4 import BeautifulSoup
+import html5lib
 
 __addonid__   = "plugin.video.mv6park"
 __addon__     = xbmcaddon.Addon(id=__addonid__)
@@ -130,8 +131,6 @@ def MainMenu():
         url = v[1]
         addDir( name, url, '1')
         
-    addDir("test", '', '10', isDir=False)
-
     xbmcplugin.endOfDirectory(int(sys.argv[1]))
     
 def showVideoLists(url):   
@@ -139,18 +138,19 @@ def showVideoLists(url):
     link = getHttpData(url)
     if link == None: return
 
-    tree = html.fromstring(html_template % link)
-    blog_title_list = tree.xpath('//div[@class="blog_title"]/a')
-    blog_content_list = tree.xpath('//div[@class="content"]')
+    html = html_template % link
+    soup = BeautifulSoup( html, 'html5lib')
+    blog_title_list = soup.find_all("div", class_="blog_title")
+    blog_content_list = soup.find_all("div", class_="content")
 
-    for i, title in enumerate(blog_title_list):
-        url = title.get('href')
-        name = title.text.encode('utf-8')
+    for title, content in zip(blog_title_list, blog_content_list):
+        url = title.a.get('href')
+        name = title.a.text.encode('utf-8')
         thumb = ''
 
-        img = blog_content_list[i].xpath('./div/font/a/img')
-        if len(img) == 1:
-            thumb = img[0].get('src') if img[0].get('real_src') == None else img[0].get('real_src')
+        img = content.find("img")
+        if img is not None:
+            thumb = img.get('src') if img.get('real_src') == None else img.get('real_src')
 
         addDir(name, url, '9', thumb)
 
